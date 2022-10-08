@@ -1,0 +1,21 @@
+<ng-container *ngIf="securecode$ | async as securecode">
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-label>Enter here</mat-label>
+      <input
+        matInput
+        formControlName="passcode"
+        placeholder="Your secure code (case sensitive)"
+      />
+
+      <button
+        mat-icon-button
+        matSuffix
+        type="submit"
+        [disabled]="formGroup.invalid || securecode?.status == 'loading'"
+      >
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </mat-form-field>
+  </form>
+</ng-container>

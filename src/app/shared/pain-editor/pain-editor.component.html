@@ -1,0 +1,67 @@
+<ng-container *ngIf="pains$ | async as pain">
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>The facing problem *</mat-label>
+      <textarea
+        matInput
+        formControlName="problem"
+        [mat-autosize]="true"
+        rows="2"
+        placeholder="Some frustased issue want to share"
+      ></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Solution for that problem *</mat-label>
+      <textarea
+        matInput
+        formControlName="solution"
+        [mat-autosize]="true"
+        rows="3"
+        placeholder="Just put this line code too launch Space-X Rocket"
+      ></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Funny word</mat-label>
+      <input type="text" formControlName="label" matInput />
+    </mat-form-field>
+
+    <mat-form-field class="w-100" appearance="fill">
+      <mat-label>Tags</mat-label>
+      <mat-chip-list #chipList aria-label="Tag selection">
+        <mat-chip
+          *ngFor="let tag of tags"
+          [selectable]="selectable"
+          [removable]="removable"
+          (removed)="removeTag(tag)"
+        >
+          {{ tag.name }}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input
+          placeholder="New tag... (press enter)"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="addOnBlur"
+          (matChipInputTokenEnd)="addTag($event)"
+        />
+      </mat-chip-list>
+    </mat-form-field>
+
+    <div class="d-flex w-100">
+      <button type="button" mat-button color="warn" (click)="cancel()">
+        Cancel
+      </button>
+      <button
+        type="submit"
+        mat-raised-button
+        color="primary"
+        class="ms-auto"
+        [disabled]="formGroup.invalid || pain?.status == 'loading'"
+      >
+        {{ data?.uuid ? "Update" : "Celebrate!" }}
+      </button>
+    </div>
+  </form>
+</ng-container>

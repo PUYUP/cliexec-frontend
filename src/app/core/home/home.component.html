@@ -1,0 +1,31 @@
+<div class="container pt-2">
+  <div class="row d-flex justify-content-center">
+    <div class="col-12 col-md-9 col-lg-7 col-xl-5">
+      <div class="d-sm-flex w-100 align-items-top mb-4">
+        <div>
+          Let's celebrate problem solution every day at coding time. Get rid
+          bored feeling!
+        </div>
+
+        <div class="ms-sm-auto ps-sm-3 mt-3 mt-sm-0 mt-md-0">
+          <button mat-raised-button color="primary" (click)="startCelebrate()">
+            <mat-icon>celebration</mat-icon>
+            <span class="ms-2">Start Celebration</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="d-block mb-4">
+        <mat-radio-group
+          [(ngModel)]="painShowing"
+          (change)="painShowingChange($event)"
+        >
+          <mat-radio-button value="all" class="me-4">All</mat-radio-button>
+          <mat-radio-button value="own">My own</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <app-pain-list></app-pain-list>
+    </div>
+  </div>
+</div>

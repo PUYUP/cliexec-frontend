@@ -1,0 +1,17 @@
+.mat-chip {
+  cursor: pointer;
+}
+
+.mat-chip .mat-icon {
+  height: 18px;
+  width: 18px;
+}
+
+.mat-chip .material-icons {
+  font-size: 18px;
+}
+
+.mat-standard-chip {
+  min-height: 28px;
+  padding: 7px 8px;
+}

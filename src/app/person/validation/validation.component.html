@@ -1,0 +1,21 @@
+<div class="container pt-4">
+  <div class="row d-flex justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6 col-xl-4">
+      <h1 class="mb-0">Verify your email address</h1>
+
+      <h3>
+        Secure code send to: <strong>{{ issuer }}</strong>
+      </h3>
+
+      <div class="mb-2">
+        <span class="text-primary" (click)="resend()">Resend</span> secure code
+      </div>
+
+      <app-securecode-validation
+        [token]="token"
+        [challenge]="challenge"
+        [issuer]="issuer"
+      ></app-securecode-validation>
+    </div>
+  </div>
+</div>

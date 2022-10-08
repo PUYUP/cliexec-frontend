@@ -1,0 +1,32 @@
+<div class="container pt-2">
+  <div class="row d-flex justify-content-center">
+    <div class="col-12 col-md-9 col-lg-7 col-xl-5">
+      <ng-container *ngIf="user$ | async as user">
+        <ng-container *ngIf="user?.status == 'loaded'">
+          <div class="text-center p-4">
+            <div class="ratio ratio-1x1 w-25 ms-auto me-auto">
+              <img
+                [src]="
+                  user?.user?.profile?.picture
+                    ? user?.user?.profile?.picture
+                    : 'assets/images/default-placeholder.png'
+                "
+                class="rounded-circle shadow-md"
+              />
+            </div>
+
+            <h4 class="fw-bold mt-2 mb-0">{{ user?.user?.profile?.name }}</h4>
+            <p *ngIf="user?.user?.profile?.headline" class="mb-0">
+              {{ user?.user?.profile?.headline }}
+            </p>
+            <p *ngIf="user?.user?.profile?.about">
+              {{ user?.user?.profile?.about }}
+            </p>
+          </div>
+        </ng-container>
+      </ng-container>
+
+      <app-pain-list [userHexid]="hexid"></app-pain-list>
+    </div>
+  </div>
+</div>

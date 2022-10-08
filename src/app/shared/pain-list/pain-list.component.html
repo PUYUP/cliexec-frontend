@@ -1,0 +1,146 @@
+<ng-container *ngIf="pains$ | async as pain">
+  <p
+    *ngIf="pain?.status == 'loading' && pain?.action == 'load'"
+    class="text-center"
+  >
+    Loading celebrations...
+  </p>
+
+  <ng-container *ngIf="pain?.data?.results?.length > 0">
+    <div *ngIf="(selectTags$ | async).data?.length > 0" class="mt-2 mb-4">
+      <mat-chip-list *ngIf="selectTags$ | async as tagData">
+        <ng-container *ngFor="let tag of tagData?.data">
+          <mat-chip
+            selected
+            [removable]="true"
+            (removed)="removeSelectedTag(tag)"
+          >
+            {{ tag.name }}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+        </ng-container>
+      </mat-chip-list>
+    </div>
+
+    <mat-card *ngFor="let item of pain?.data?.results" class="mb-3">
+      <mat-card-header class="d-flex align-items-center mb-3">
+        <div mat-card-avatar [routerLink]="['/user', item?.user_hexid]">
+          <div class="ratio ratio-1x1 w-100">
+            <img
+              *ngIf="!item?.profile?.picture"
+              src="assets/images/default-placeholder.png"
+              class="rounded"
+            />
+
+            <img
+              *ngIf="item?.profile?.picture"
+              [src]="item?.profile?.picture"
+              class="rounded"
+            />
+          </div>
+        </div>
+
+        <mat-card-title [routerLink]="['/user', item?.user_hexid]">
+          {{ item?.profile?.name }}
+        </mat-card-title>
+
+        <mat-card-subtitle class="mb-0">
+          {{ item.create_at | date: "dd MMM YYYY HH:mm" }}
+        </mat-card-subtitle>
+
+        <div *ngIf="item?.is_creator" class="ms-auto">
+          <button mat-icon-button [matMenuTriggerFor]="beforeMenu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+
+          <mat-menu #beforeMenu="matMenu" xPosition="before">
+            <button mat-menu-item (click)="edit(item)">
+              <mat-icon>edit</mat-icon>
+              <span>Edit</span>
+            </button>
+
+            <button mat-menu-item (click)="delete(item)">
+              <mat-icon>delete</mat-icon>
+              <span>Delete</span>
+            </button>
+          </mat-menu>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content>
+        <h3
+          *ngIf="item?.default_translate?.label"
+          [innerHTML]="item?.default_translate?.label"
+        ></h3>
+
+        <div *ngIf="item?.default_translate?.problem">
+          <p class="fw-bold text-danger small mb-1">Problem</p>
+          <div
+            [innerHTML]="item?.default_translate?.problem"
+            class="prewrap"
+          ></div>
+        </div>
+
+        <div *ngIf="item?.default_translate?.solution" class="mt-4">
+          <p class="fw-bold text-success small mb-1">Solution</p>
+          <div
+            [innerHTML]="item?.default_translate?.solution"
+            class="prewrap"
+          ></div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions class="ps-2 pb-2 pe-2">
+        <div class="d-sm-flex w-100 align-items-center">
+          <div>
+            <mat-chip-list>
+              <ng-container
+                *ngFor="let r of item?.reaction_stat | keyvalue: returnZero"
+              >
+                <mat-chip
+                  *ngIf="r.key != 'total'"
+                  (click)="addReaction(item, r.key)"
+                  [color]="item?.reaction_given == r.key ? 'primary' : ''"
+                  [selected]="item?.reaction_given == r.key"
+                >
+                  <mat-icon *ngIf="r.key == 'favorite'">favorite</mat-icon>
+                  <mat-icon *ngIf="r.key == 'curious'">mood_bad</mat-icon>
+                  <mat-icon *ngIf="r.key == 'celebrate'">celebration</mat-icon>
+                  <mat-icon *ngIf="r.key == 'support'">redeem</mat-icon>
+                  <mat-icon *ngIf="r.key == 'insightful'">lightbulb</mat-icon>
+                  <span class="ms-2">{{ r.value }}</span>
+                </mat-chip>
+              </ng-container>
+            </mat-chip-list>
+          </div>
+
+          <!--
+          <div class="ms-auto mt-3 mt-sm-0">
+            <button mat-stroked-button>
+              <mat-icon>comment</mat-icon>
+              <span class="ms-2">Comment</span>
+            </button>
+          </div>
+          -->
+        </div>
+
+        <div *ngIf="item?.default_translate?.tags?.length > 0" class="mt-2">
+          <mat-chip-list>
+            <ng-container *ngFor="let tag of item?.default_translate?.tags">
+              <mat-chip (click)="selectTag(tag)">{{ tag.name }}</mat-chip>
+            </ng-container>
+          </mat-chip-list>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </ng-container>
+
+  <mat-paginator
+    [disabled]="pain?.status == 'loading'"
+    [length]="pain?.data?.total"
+    [pageSize]="pageSize"
+    (page)="pageChangeEvent($event, pain?.data)"
+    aria-label="Select page"
+  >
+  </mat-paginator>
+</ng-container>

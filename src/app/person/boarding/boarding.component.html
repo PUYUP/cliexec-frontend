@@ -1,0 +1,15 @@
+<div class="container pt-4">
+  <ng-container>
+    <div class="row d-flex justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-4">
+        <h1 *ngIf="challenge === 'validate_email'">Hate spammers? We too</h1>
+        <h3 *ngIf="challenge === 'password_recovery'">
+          Enter your user account's verified email address and we will send you
+          secure code for password recovery.
+        </h3>
+
+        <app-securecode-create [challenge]="challenge"></app-securecode-create>
+      </div>
+    </div>
+  </ng-container>
+</div>
